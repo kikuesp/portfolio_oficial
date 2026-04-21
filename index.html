@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Enrique Perrin — 3D Artist & Game Developer</title>
+  <meta name="description" content="Portfolio de Enrique Perrin, artista 3D y desarrollador de videojuegos." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/main.css" />
+  <style>
+    /* ══════════════════════════════
+       HERO
+    ══════════════════════════════ */
+    #inicio {
+      min-height: 100vh;
+      display: grid; grid-template-columns: 1fr 1fr;
+      align-items: center; padding: 8rem 4rem 4rem;
+      position: relative; overflow: hidden;
+    }
+    .hero-bg-dots {
+      position: absolute; inset: 0; z-index: 0;
+      background-image: radial-gradient(circle, #2a2b3088 1px, transparent 1px);
+      background-size: 36px 36px;
+      mask-image: radial-gradient(ellipse 80% 80% at 80% 50%, black 20%, transparent 100%);
+      -webkit-mask-image: radial-gradient(ellipse 80% 80% at 80% 50%, black 20%, transparent 100%);
+    }
+    .hero-left { position: relative; z-index: 1; }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: .5rem;
+      background: #c8f06015; border: 1px solid #c8f06040;
+      color: var(--accent); font-size: .72rem; letter-spacing: .12em;
+      text-transform: uppercase; padding: .4rem 1rem; border-radius: 99px;
+      margin-bottom: 2rem; animation: fadeUp .7s ease both;
+    }
+    .hero-badge::before { content:''; width:6px; height:6px; border-radius:50%; background:var(--accent); animation:blink 2s infinite; }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.2} }
+    .hero-name {
+      font-family: var(--font-h); font-weight: 800;
+      font-size: clamp(3rem, 6vw, 5.5rem); line-height: .95;
+      color: var(--white); margin-bottom: 1rem;
+      animation: fadeUp .8s .1s ease both; white-space: pre-line;
+    }
+    .hero-name em {
+      font-style: normal;
+      background: linear-gradient(120deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero-role {
+      font-size: 1.1rem; font-weight: 400; color: var(--white);
+      margin-bottom: .5rem; line-height: 1.5;
+      animation: fadeUp .8s .2s ease both;
+      letter-spacing: .02em;
+    }
+    .hero-desc {
+      font-size: .95rem; color: var(--muted);
+      margin-bottom: 2rem; line-height: 1.7;
+      animation: fadeUp .8s .25s ease both;
+    }
+    .hero-btns {
+      display: flex; gap: 1rem; flex-wrap: wrap;
+      animation: fadeUp .8s .3s ease both;
+    }
+    .hero-stats {
+      display: flex; gap: 2.5rem; margin-top: 3.5rem;
+      padding-top: 2.5rem; border-top: 1px solid var(--line);
+      animation: fadeUp .8s .4s ease both; flex-wrap: wrap;
+    }
+    .stat-num { font-family: var(--font-h); font-size: 2rem; font-weight: 800; color: var(--white); line-height: 1; }
+    .stat-num span { color: var(--accent); }
+    .stat-label { font-size: .78rem; color: var(--muted); margin-top: .3rem; }
+    .hero-right { position: relative; z-index: 1; display: flex; justify-content: center; align-items: center; }
+    .hero-img-frame { position: relative; width: 420px; max-width: 100%; }
+    .hero-img-frame::before {
+      content:''; position:absolute; inset:-16px;
+      border: 1px solid var(--line); border-radius: 12px;
+    }
+    .hero-img-frame::after {
+      content:''; position:absolute; bottom:-24px; right:-24px;
+      width:60%; height:60%;
+      background: linear-gradient(135deg, #c8f06020, #4af0c410);
+      border-radius: 8px; z-index: -1;
+    }
+    .hero-img-frame img { width:100%; border-radius:8px; display:block; }
+    .hero-tools-badge {
+      position: absolute; bottom: -20px; left: -20px;
+      background: var(--bg3); border: 1px solid var(--line);
+      border-radius: 10px; padding: 1rem 1.3rem;
+      display: flex; flex-direction: column; gap: .5rem;
+      box-shadow: 0 20px 60px #00000060;
+    }
+    .tools-label { font-size: .65rem; letter-spacing: .15em; text-transform: uppercase; color: var(--muted); }
+    .tools-list { display: flex; gap: .5rem; }
+    .tool-dot {
+      width: 28px; height: 28px; border-radius: 6px;
+      background: var(--bg2); border: 1px solid var(--line);
+      display: flex; align-items: center; justify-content: center;
+      font-size: .65rem; font-weight: 700; color: var(--accent); font-family: var(--font-h);
+    }
+    .avail-badge {
+      position: absolute; top: -16px; right: -16px;
+      background: var(--accent); color: var(--bg);
+      font-size: .65rem; font-weight: 700; letter-spacing: .1em;
+      text-transform: uppercase; padding: .4rem .9rem; border-radius: 99px;
+    }
+    @keyframes fadeUp { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
+
+    /* ══════════════════════════════
+       SOBRE MÍ — con fix móvil
+    ══════════════════════════════ */
+    #sobre-mi { background: var(--bg2); border-top: 1px solid var(--line); }
+
+    /* Desktop: la tarjeta sticky flota junto al scroll del texto */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 5fr 7fr;
+      gap: 5rem;
+      align-items: start;
+      margin-top: 3.5rem;
+    }
+    .about-card-col { position: relative; }  /* wrapper no sticky por defecto */
+    .about-card {
+      background: var(--bg3); border: 1px solid var(--line);
+      border-radius: 10px; padding: 2rem;
+      position: static;
+    }
+    .about-card-photo {
+      width: 100%; border-radius: 6px; display: block;
+      margin-bottom: 1.5rem; object-fit: contain; background: var(--bg2);
+    }
+    .about-card-name { font-family: var(--font-h); font-size: 1.3rem; font-weight: 800; color: var(--white); }
+    .about-card-sub  { font-size: .85rem; color: var(--muted); margin-top: .3rem; }
+    .about-card-divider { border:none; border-top:1px solid var(--line); margin:1.3rem 0; }
+    .about-card-row { display:flex; justify-content:space-between; align-items:center; padding:.35rem 0; }
+    .about-card-row span:first-child { font-size:.78rem; color:var(--muted); }
+    .about-card-row span:last-child  { font-size:.82rem; color:var(--text); font-weight:500; }
+    .about-card-status {
+      margin-top:1.3rem; background:#c8f06012; border:1px solid #c8f06030;
+      border-radius:6px; padding:.7rem 1rem;
+      display:flex; align-items:center; gap:.6rem;
+      font-size:.78rem; color:var(--accent); font-weight:600;
+    }
+    .about-card-status::before { content:''; width:7px; height:7px; border-radius:50%; background:var(--accent); animation:blink 2s infinite; flex-shrink:0; }
+    .about-right p { font-size:1.05rem; font-weight:300; color:var(--text); line-height:1.85; margin-bottom:1.4rem; }
+    .about-right strong { color:var(--white); font-weight:500; }
+    .skills-section { margin-top:2.5rem; }
+    .skills-label { font-size:.7rem; letter-spacing:.15em; text-transform:uppercase; color:var(--muted); margin-bottom:1rem; }
+    .skill-bar-row { margin-bottom:1rem; }
+    .skill-bar-top { display:flex; justify-content:space-between; margin-bottom:.4rem; }
+    .skill-bar-name { font-size:.88rem; color:var(--text); font-weight:500; }
+    .skill-bar-pct  { font-size:.8rem; color:var(--muted); }
+    .skill-bar-track { height:4px; background:var(--bg); border-radius:99px; overflow:hidden; }
+    .skill-bar-fill  { height:100%; border-radius:99px; background:linear-gradient(90deg, var(--accent), var(--accent2)); width:0%; transition:width 1.2s cubic-bezier(.4,0,.2,1); }
+    .tools-grid { display:flex; flex-wrap:wrap; gap:.6rem; margin-top:1rem; }
+    .tool-chip {
+      display:flex; align-items:center; gap:.5rem;
+      background:var(--bg3); border:1px solid var(--line);
+      border-radius:6px; padding:.5rem .9rem;
+      font-size:.82rem; color:var(--text); font-weight:500; transition:border-color .2s, color .2s;
+    }
+    .tool-chip:hover { border-color:var(--accent); color:var(--accent); }
+
+    /* ══════════════════════════════
+       PROYECTOS
+    ══════════════════════════════ */
+    #proyectos { background: var(--bg); border-top: 1px solid var(--line); }
+    .proj-header { display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:3rem; flex-wrap:wrap; gap:1rem; }
+    .proj-filter { display:flex; gap:.5rem; flex-wrap:wrap; }
+    .filter-btn {
+      font-size:.75rem; letter-spacing:.06em; text-transform:uppercase;
+      padding:.45rem 1rem; border-radius:99px; border:1px solid var(--line);
+      background:transparent; color:var(--muted); cursor:pointer; transition:all .2s; font-family:var(--font-b);
+    }
+    .filter-btn.active, .filter-btn:hover { border-color:var(--accent); color:var(--accent); background:#c8f06010; }
+    .proj-grid { display:grid; grid-template-columns:repeat(12, 1fr); gap:1.2rem; }
+    .proj-card {
+      position:relative; overflow:hidden; border-radius:8px;
+      border:1px solid var(--line); background:var(--bg2);
+      transition:border-color .3s, transform .3s; cursor:pointer;
+    }
+    .proj-card:hover { border-color:#c8f06050; transform:translateY(-4px); }
+    .proj-card.wide   { grid-column:span 7; }
+    .proj-card.narrow { grid-column:span 5; }
+    .proj-card.half   { grid-column:span 6; }
+    /* CORRECCIÓN: ocultar sin dejar huecos */
+    .proj-card.hidden { display:none; }
+    .proj-img-wrap { overflow:hidden; }
+    .proj-img-wrap img {
+      width:100%; display:block; aspect-ratio:16/10; object-fit:cover;
+      transition:transform .5s, filter .5s; filter:saturate(.8) brightness(.9);
+    }
+    .proj-card:hover .proj-img-wrap img { transform:scale(1.05); filter:saturate(1.1) brightness(1); }
+    .proj-body { padding:1.6rem; }
+    .proj-tags { display:flex; gap:.4rem; margin-bottom:.8rem; flex-wrap:wrap; }
+    .proj-tag { font-size:.65rem; letter-spacing:.1em; text-transform:uppercase; padding:.25rem .65rem; border-radius:3px; background:#c8f06012; color:var(--accent); font-weight:600; }
+    .proj-tag.teal { background:#4af0c412; color:var(--accent2); }
+    .proj-title { font-family:var(--font-h); font-size:1.15rem; font-weight:700; color:var(--white); margin-bottom:.5rem; }
+    .proj-desc { font-size:.9rem; color:var(--muted); line-height:1.65; }
+    .proj-link { display:inline-flex; align-items:center; gap:.4rem; margin-top:1.2rem; font-size:.8rem; font-weight:600; color:var(--accent); text-decoration:none; transition:gap .2s; }
+    .proj-link:hover { gap:.7rem; }
+
+    /* ══════════════════════════════
+       HABILIDADES
+    ══════════════════════════════ */
+    #habilidades { background: var(--bg2); border-top: 1px solid var(--line); }
+    .expertise-grid { display:grid; grid-template-columns:repeat(3, 1fr); gap:1.5rem; margin-top:3rem; }
+    .exp-card {
+      background:var(--bg3); border:1px solid var(--line); border-radius:10px;
+      padding:2rem; transition:border-color .3s, transform .3s;
+    }
+    .exp-card:hover { border-color:#c8f06040; transform:translateY(-3px); }
+    .exp-icon { width:46px; height:46px; border-radius:10px; background:#c8f06015; border:1px solid #c8f06030; display:flex; align-items:center; justify-content:center; font-size:1.3rem; margin-bottom:1.3rem; }
+    .exp-title { font-family:var(--font-h); font-size:1rem; font-weight:700; color:var(--white); margin-bottom:.6rem; }
+    .exp-desc { font-size:.9rem; color:var(--muted); line-height:1.7; }
+    .exp-tools { margin-top:1.2rem; display:flex; flex-wrap:wrap; gap:.4rem; }
+    .exp-tool { font-size:.72rem; background:var(--bg); border:1px solid var(--line); border-radius:3px; padding:.2rem .6rem; color:var(--muted); }
+
+    /* ══════════════════════════════
+       CTA CONTACTO (home bottom)
+    ══════════════════════════════ */
+    #cta-contacto { background: var(--bg); border-top: 1px solid var(--line); }
+    .cta-inner {
+      max-width: 640px; margin: 0 auto;
+      text-align: center; padding: 6rem 2rem;
+    }
+    .cta-inner h2 { font-family:var(--font-h); font-size:clamp(1.8rem,4vw,2.8rem); font-weight:800; color:var(--white); margin-bottom:1rem; line-height:1.15; }
+    .cta-inner p { color:var(--muted); font-size:.95rem; line-height:1.7; margin-bottom:2.5rem; }
+    .cta-btns { display:flex; gap:1rem; justify-content:center; flex-wrap:wrap; }
+
+    /* ══════════════════════════════
+       RESPONSIVE — FIXES MÓVIL
+    ══════════════════════════════ */
+    @media (max-width: 900px) {
+      /* HERO: columna única, sin imagen */
+      #inicio {
+        grid-template-columns: 1fr;
+        padding: 7rem 1.5rem 4rem;
+        text-align: left;
+        min-height: auto;
+      }
+      .hero-btns { justify-content: flex-start; }
+      .hero-stats { gap: 2rem; }
+      .hero-right { display: none; } /* imagen hero oculta en móvil */
+
+      /* SOBRE MÍ — FIX PRINCIPAL:
+         Cambiar a layout vertical. Sin sticky. Sin posición bloqueante. */
+      .about-grid {
+        grid-template-columns: 1fr;
+        gap: 0;
+      }
+      /* La tarjeta de perfil se vuelve horizontal y compacta */
+      .about-card {
+        position: static !important;  /* ELIMINAR sticky que bloqueaba */
+        display: flex;
+        gap: 1.2rem;
+        align-items: center;
+        padding: 1.3rem;
+        margin-bottom: 2rem;
+        border-radius: 10px;
+      }
+      .about-card-photo {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        margin-bottom: 0;
+        flex-shrink: 0;
+        object-fit: cover;
+      }
+      .about-card-meta { flex: 1; min-width: 0; }
+      .about-card-name { font-size: 1rem; }
+      .about-card-sub  { font-size: .78rem; }
+      .about-card-divider { display: none; }
+      .about-card-rows { display: none; }
+      .about-card-status {
+        margin-top: .6rem;
+        font-size: .72rem;
+        padding: .4rem .7rem;
+      }
+      .about-right p { font-size: .95rem; }
+
+      /* PROYECTOS: una columna */
+      .proj-grid { grid-template-columns: 1fr; }
+      .proj-card.wide, .proj-card.narrow, .proj-card.half { grid-column: span 1; }
+
+      /* HABILIDADES: una columna */
+      .expertise-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 600px) {
+      #inicio { padding: 6.5rem 1.2rem 3rem; }
+      .hero-stats { flex-wrap: wrap; gap: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="cur"></div>
+<div id="cur-r"></div>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="index.html" class="nav-logo">Enrique Perrin<span class="dot">.</span></a>
+  <ul class="nav-links">
+    <li><a href="index.html" class="active">Inicio</a></li>
+    <li><a href="galeria.html">Galería</a></li>
+    <li><a href="contacto.html" class="nav-cta">Contactar</a></li>
+  </ul>
+  <button class="nav-hamburger" id="navHamburger" aria-label="Menú">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+<div class="nav-mobile-menu" id="navMobile">
+  <a href="index.html" class="active">Inicio</a>
+  <a href="galeria.html">Galería</a>
+  <a href="contacto.html" class="nav-cta-mobile">Contactar</a>
+</div>
+
+<!-- HERO -->
+<section id="inicio">
+  <div class="hero-bg-dots"></div>
+  <div class="hero-left">
+    <div class="hero-badge" id="heroBadge">Disponible para prácticas y trabajo</div>
+    <h1 class="hero-name" id="heroName">Enrique<br/><em>Perrin García</em></h1>
+    <p class="hero-role" id="heroRole">3D Artist · Game Developer · Animator</p>
+    <p class="hero-desc" id="heroDesc">Estudiante de Animación 3D con pasión por crear mundos, personajes y experiencias jugables memorables.</p>
+    <div class="hero-btns">
+      <a href="galeria.html" class="btn btn-lime">Ver galería</a>
+      <a href="contacto.html" class="btn btn-ghost">Contactar</a>
+    </div>
+    <div class="hero-stats" id="heroStats">
+      <div>
+        <div class="stat-num" id="stat1Num">3+</div>
+        <div class="stat-label" id="stat1Label">Áreas de especialización</div>
+      </div>
+      <div>
+        <div class="stat-num" id="stat2Num">5+</div>
+        <div class="stat-label" id="stat2Label">Herramientas dominadas</div>
+      </div>
+      <div>
+        <div class="stat-num" id="stat3Num">100%</div>
+        <div class="stat-label" id="stat3Label">Motivación y ganas</div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-img-frame">
+      <img id="heroImg" src="https://cdn.b12.io/client_media/SgQdLLsD/ef3c0974-7d41-11f0-a7e3-0242ac110002-jpg-hero_image.png" alt="Enrique Perrin" />
+      <div class="avail-badge" id="availBadge">Disponible</div>
+      <div class="hero-tools-badge">
+        <div class="tools-label">Herramientas</div>
+        <div class="tools-list">
+          <div class="tool-dot">BL</div>
+          <div class="tool-dot">UN</div>
+          <div class="tool-dot">UE</div>
+          <div class="tool-dot">ZB</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECCIONES DINÁMICAS (Sobre mí, Proyectos, Habilidades) -->
+<div id="dynamicSections"></div>
+
+<!-- CTA CONTACTO -->
+<section id="cta-contacto">
+  <div class="inner">
+    <div class="cta-inner">
+      <p class="s-eyebrow reveal" style="justify-content:center;">Trabajemos juntos</p>
+      <h2 class="reveal">¿Tienes un proyecto<br/>en mente?</h2>
+      <p class="reveal">Estoy disponible para prácticas y oportunidades laborales en la industria del videojuego y la animación.</p>
+      <div class="cta-btns reveal">
+        <a href="contacto.html" class="btn btn-lime">Enviar mensaje</a>
+        <a href="galeria.html" class="btn btn-ghost">Ver galería</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Enrique Perrin<span>.</span></div>
+  <div>© 2025 Enrique Perrin García · Todos los derechos reservados</div>
+  <div class="footer-links" style="display:flex;gap:1.5rem;flex-wrap:wrap;justify-content:center;"></div>
+</footer>
+
+<script src="js/data.js"></script>
+<script src="js/shared.js"></script>
+<script>
+/* ── RENDERIZADO DINÁMICO HOME ─────────────────────────── */
+document.addEventListener('DOMContentLoaded', () => {
+  const db = getDB();
+  const h  = db.home;
+
+  /* Hero */
+  document.getElementById('heroBadge').textContent = h.badge || '';
+  if (h.heroTitle) {
+    const parts = h.heroTitle.split('\n');
+    document.getElementById('heroName').innerHTML =
+      parts.map((p, i) => i === parts.length - 1 ? `<em>${p}</em>` : p).join('<br/>');
+  }
+  document.getElementById('heroRole').textContent = h.heroSubtitle || '';
+  document.getElementById('heroDesc').textContent = h.heroDesc || '';
+  if (h.heroImage) document.getElementById('heroImg').src = h.heroImage;
+  if (db.config.availableForWork === false) {
+    document.getElementById('availBadge').style.background = 'var(--muted)';
+    document.getElementById('availBadge').textContent = 'No disponible';
+  }
+
+  /* Stats */
+  if (h.stats && h.stats.length) {
+    document.getElementById('stat1Num').innerHTML   = h.stats[0]?.num   || '';
+    document.getElementById('stat1Label').textContent = h.stats[0]?.label || '';
+    document.getElementById('stat2Num').innerHTML   = h.stats[1]?.num   || '';
+    document.getElementById('stat2Label').textContent = h.stats[1]?.label || '';
+    document.getElementById('stat3Num').innerHTML   = h.stats[2]?.num   || '';
+    document.getElementById('stat3Label').textContent = h.stats[2]?.label || '';
+  }
+
+  /* Secciones dinámicas */
+  const container = document.getElementById('dynamicSections');
+  (h.sections || []).filter(s => s.active).forEach(sec => {
+    if (sec.type === 'about')    container.innerHTML += renderAbout(sec);
+    else if (sec.type === 'projects') container.innerHTML += renderProjects(db);
+    else if (sec.type === 'skills')   container.innerHTML += renderSkills(sec);
+    else if (sec.type === 'custom')   container.innerHTML += renderCustom(sec);
+  });
+
+  /* Sección Gameplays (controlada desde el admin) */
+  if (db.gameplays && db.gameplays.active && db.gameplays.items && db.gameplays.items.length > 0) {
+    container.innerHTML += renderGameplays(db.gameplays);
+  }
+
+  setTimeout(() => { initReveal(); initSkillBars(); }, 60);
+});
+
+/* ── RENDER ABOUT ─────────────────────────────────────── */
+function renderAbout(s) {
+  const infoRows = Array.isArray(s.cardInfo)
+    ? s.cardInfo.map(r => `<div class="about-card-row"><span>${r.label}</span><span>${r.value}</span></div>`).join('')
+    : (s.cardInfo||'').split('·').map(l => {
+        const [k,...v] = l.trim().split(':');
+        return `<div class="about-card-row"><span>${k?.trim()||l}</span><span>${v.join(':').trim()}</span></div>`;
+      }).join('');
+
+  return `
+  <section id="sobre-mi">
+    <div class="inner">
+      <p class="s-eyebrow reveal">Sobre mí</p>
+      <h2 class="s-title reveal">${s.title||'Quién soy'}</h2>
+      <div class="about-grid">
+        <div class="about-card-col">
+          <div class="about-card reveal">
+            <img class="about-card-photo" src="${s.photo||''}" alt="${s.cardName||''}" onerror="this.style.display='none'" />
+            <div class="about-card-meta">
+              <div class="about-card-name">${s.cardName||''}</div>
+              <div class="about-card-sub">${s.cardSub||''}</div>
+              <div class="about-card-status">${s.cardStatus||''}</div>
+            </div>
+          </div>
+          <!-- Info rows solo visibles en desktop, dentro de la tarjeta original -->
+          <div class="about-card desktop-only" style="margin-top:1rem;">
+            <div class="about-card-rows">${infoRows}</div>
+          </div>
+        </div>
+        <div class="about-right">
+          ${(s.paragraphs||[]).map(p => `<p class="reveal">${p}</p>`).join('')}
+          <div class="skills-section">
+            <div class="skills-label">Nivel de habilidad</div>
+            ${(s.skills||[]).map(sk => `
+              <div class="skill-bar-row">
+                <div class="skill-bar-top"><span class="skill-bar-name">${sk.name}</span><span class="skill-bar-pct">${sk.pct}%</span></div>
+                <div class="skill-bar-track"><div class="skill-bar-fill" data-w="${sk.pct}"></div></div>
+              </div>`).join('')}
+            <div style="margin-top:2rem;">
+              <div class="skills-label">Herramientas & software</div>
+              <div class="tools-grid">
+                ${(s.tools||[]).map(t => `<div class="tool-chip">${t}</div>`).join('')}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>`;
+}
+
+/* ── RENDER PROJECTS ──────────────────────────────────── */
+function renderProjects(db) {
+  const projects = [...(db.projects||[])].sort((a,b) => (a.order||0)-(b.order||0));
+  const cats = [...new Set(projects.map(p => p.cat))];
+  const catLabels = { '3d':'3D', game:'Gamedev', anim:'Animación' };
+  const layouts = ['wide','narrow','half','half'];
+
+  return `
+  <section id="proyectos">
+    <div class="inner">
+      <div class="proj-header">
+        <div>
+          <p class="s-eyebrow reveal">Proyectos</p>
+          <h2 class="s-title reveal">Mi trabajo</h2>
+        </div>
+        <div class="proj-filter reveal">
+          <button class="filter-btn active" onclick="filterProj(event,'all')">Todos</button>
+          ${cats.map(c => `<button class="filter-btn" onclick="filterProj(event,'${c}')">${catLabels[c]||c}</button>`).join('')}
+        </div>
+      </div>
+      <div class="proj-grid" id="projGrid">
+        ${projects.map((p, i) => `
+        <div class="proj-card ${p.size||layouts[i%layouts.length]||'half'} reveal" data-cat="${p.cat}">
+          <div class="proj-img-wrap"><img src="${p.img}" alt="${p.title}" loading="lazy" /></div>
+          <div class="proj-body">
+            <div class="proj-tags">${(p.tags||[]).map((t,ti) => `<span class="proj-tag ${ti>0?'teal':''}">${t}</span>`).join('')}</div>
+            <h3 class="proj-title">${p.title}</h3>
+            <p class="proj-desc">${p.desc}</p>
+            ${p.link && p.link !== '#' ? `<a href="${p.link}" class="proj-link" target="_blank">Ver proyecto →</a>` : ''}
+          </div>
+        </div>`).join('')}
+      </div>
+    </div>
+  </section>`;
+}
+
+/* ── RENDER SKILLS ────────────────────────────────────── */
+function renderSkills(s) {
+  return `
+  <section id="habilidades">
+    <div class="inner">
+      <p class="s-eyebrow reveal">${s.eyebrow||'Habilidades'}</p>
+      <h2 class="s-title reveal">${s.title||'Qué puedo aportarte'}</h2>
+      <div class="expertise-grid">
+        ${(s.cards||[]).map(c => `
+        <div class="exp-card reveal">
+          <div class="exp-icon">${c.icon||'⭐'}</div>
+          <div class="exp-title">${c.title}</div>
+          <p class="exp-desc">${c.desc}</p>
+          <div class="exp-tools">${(c.tools||[]).map(t => `<span class="exp-tool">${t}</span>`).join('')}</div>
+        </div>`).join('')}
+      </div>
+    </div>
+  </section>`;
+}
+
+/* ── RENDER CUSTOM ────────────────────────────────────── */
+function renderCustom(s) {
+  return `
+  <section id="sec-${s.id||'custom'}" style="background:var(--bg${s.bgAlt?'2':''}); border-top:1px solid var(--line);">
+    <div class="inner">
+      ${s.eyebrow ? `<p class="s-eyebrow reveal">${s.eyebrow}</p>` : ''}
+      <h2 class="s-title reveal">${s.title||''}</h2>
+      ${s.image ? `<img src="${s.image}" alt="${s.title}" style="width:100%;border-radius:8px;margin-top:2rem;" class="reveal" />` : ''}
+      ${s.content ? `<div class="reveal" style="margin-top:2rem;font-size:1.05rem;line-height:1.85;color:var(--text);">${s.content}</div>` : ''}
+    </div>
+  </section>`;
+}
+
+/* ── RENDER GAMEPLAYS ─────────────────────────────────── */
+function renderGameplays(gp) {
+  const items = [...(gp.items||[])].sort((a,b) => (a.order||0)-(b.order||0));
+  return `
+  <section id="gameplays" style="background:var(--bg); border-top:1px solid var(--line);">
+    <div class="inner">
+      <p class="s-eyebrow reveal">${gp.eyebrow||'Multimedia'}</p>
+      <h2 class="s-title reveal">${gp.title||'Gameplays & Demos'}</h2>
+      <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(340px,1fr)); gap:1.5rem; margin-top:2.5rem;">
+        ${items.map(item => {
+          let media = '';
+          if (item.type === 'youtube' && item.embedId) {
+            media = `<iframe style="width:100%;aspect-ratio:16/9;border:none;border-radius:6px 6px 0 0;" src="https://www.youtube.com/embed/${item.embedId}" allowfullscreen loading="lazy"></iframe>`;
+          } else if (item.type === 'mp4' && item.url) {
+            media = `<video controls style="width:100%;aspect-ratio:16/9;border-radius:6px 6px 0 0;background:#000;"><source src="${item.url}" type="video/mp4"></video>`;
+          } else if (item.type === 'gif' && item.url) {
+            media = `<img src="${item.url}" alt="${item.title||''}" style="width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:6px 6px 0 0;">`;
+          } else if (item.thumb) {
+            media = `<img src="${item.thumb}" alt="${item.title||''}" style="width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:6px 6px 0 0;">`;
+          }
+          return `
+          <div class="reveal" style="background:var(--bg2);border:1px solid var(--line);border-radius:8px;overflow:hidden;transition:border-color .3s,transform .3s;" onmouseover="this.style.borderColor='#c8f06050';this.style.transform='translateY(-4px)'" onmouseout="this.style.borderColor='var(--line)';this.style.transform=''">
+            ${media}
+            <div style="padding:1.2rem;">
+              <div style="font-family:var(--font-h);font-size:1rem;font-weight:700;color:var(--white);">${item.title||''}</div>
+              ${item.desc ? `<p style="font-size:.85rem;color:var(--muted);margin-top:.4rem;line-height:1.6;">${item.desc}</p>` : ''}
+            </div>
+          </div>`;
+        }).join('')}
+      </div>
+    </div>
+  </section>`;
+}
+
+/* ── FILTRO PROYECTOS (sin huecos) ────────────────────── */
+function filterProj(e, cat) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  e.target.classList.add('active');
+  document.querySelectorAll('.proj-card').forEach(c => {
+    c.classList.toggle('hidden', cat !== 'all' && c.dataset.cat !== cat);
+  });
+}
+</script>
+</body>
+</html>

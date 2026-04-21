@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contacto — Enrique Perrin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/main.css" />
+  <style>
+    /* Diseño original del usuario, mejorado */
+    .contact-section { background: var(--bg2); border-top: 1px solid var(--line); }
+    .contact-grid {
+      display: grid; grid-template-columns: 4fr 6fr;
+      gap: 5rem; margin-top: 3.5rem; align-items: start;
+    }
+
+    /* Links de contacto */
+    .contact-item {
+      display: flex; align-items: center; gap: .9rem; padding: .9rem 0;
+      border-bottom: 1px solid var(--line); text-decoration: none;
+      transition: color .2s; color: var(--text);
+    }
+    .contact-item:last-of-type { border-bottom: none; }
+    .contact-item:hover { color: var(--accent); }
+    .contact-item-icon {
+      width: 38px; height: 38px; background: var(--bg3); border: 1px solid var(--line);
+      border-radius: 8px; display: flex; align-items: center; justify-content: center;
+      font-size: .95rem; flex-shrink: 0; transition: border-color .2s, background .2s;
+    }
+    .contact-item:hover .contact-item-icon { border-color: var(--accent); background: #c8f06010; }
+    .contact-item-label { font-size: .7rem; color: var(--muted); margin-bottom: .1rem; }
+    .contact-item-text  { font-size: .88rem; font-weight: 500; }
+
+    /* CV download */
+    .cv-download {
+      margin-top: 1.5rem; display: flex; align-items: center; gap: .8rem;
+      background: var(--bg3); border: 1px solid var(--line); border-radius: 8px;
+      padding: 1rem 1.2rem; text-decoration: none; color: var(--text);
+      transition: border-color .2s, color .2s, transform .2s;
+      font-size: .88rem; font-weight: 500;
+    }
+    .cv-download:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
+    .cv-icon {
+      width: 38px; height: 38px; background: #c8f06015; border: 1px solid #c8f06030;
+      border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1rem;
+    }
+    .cv-text-small { font-size: .72rem; color: var(--muted); }
+
+    /* Disponibilidad badge */
+    .avail-pill {
+      display: inline-flex; align-items: center; gap: .5rem;
+      background: #c8f06012; border: 1px solid #c8f06030;
+      border-radius: 99px; padding: .4rem .9rem;
+      font-size: .72rem; color: var(--accent); font-weight: 600;
+      letter-spacing: .06em; text-transform: uppercase;
+      margin-bottom: 1.5rem;
+    }
+    .avail-pill::before { content:''; width:6px; height:6px; border-radius:50%; background:var(--accent); animation:blink 2s infinite; }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.2} }
+
+    /* Form */
+    .contact-form { display: flex; flex-direction: column; gap: 1.2rem; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .f-group { display: flex; flex-direction: column; gap: .4rem; }
+    .f-label { font-size: .7rem; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); font-weight: 500; }
+    .f-group input, .f-group textarea, .f-group select {
+      background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius);
+      padding: .85rem 1rem; color: var(--text); font-family: var(--font-b); font-size: .95rem;
+      outline: none; resize: vertical; -webkit-appearance: none; appearance: none;
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .f-group input:focus, .f-group textarea:focus, .f-group select:focus {
+      border-color: var(--accent); box-shadow: 0 0 0 3px #c8f06015;
+    }
+    .f-group textarea { min-height: 120px; }
+    .f-group select option { background: var(--bg2); }
+    .btn-submit {
+      background: var(--accent); color: var(--bg); border: none;
+      font-family: var(--font-b); font-size: .9rem; font-weight: 700;
+      padding: 1rem 2.2rem; border-radius: var(--radius); cursor: pointer;
+      transition: opacity .2s, transform .2s, box-shadow .2s;
+      display: flex; align-items: center; gap: .6rem; align-self: flex-start;
+    }
+    .btn-submit:hover { opacity: .85; transform: translateY(-2px); box-shadow: 0 12px 30px #c8f06025; }
+    .btn-submit:disabled { opacity: .6; cursor: not-allowed; transform: none; }
+
+    @media (max-width: 900px) {
+      .contact-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+      .form-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="cur"></div>
+<div id="cur-r"></div>
+
+<nav id="nav">
+  <a href="index.html" class="nav-logo">Enrique Perrin<span class="dot">.</span></a>
+  <ul class="nav-links">
+    <li><a href="index.html">Inicio</a></li>
+    <li><a href="galeria.html">Galería</a></li>
+    <li><a href="contacto.html" class="nav-cta active" style="opacity:.85;">Contactar</a></li>
+  </ul>
+  <button class="nav-hamburger" id="navHamburger" aria-label="Menú">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+<div class="nav-mobile-menu" id="navMobile">
+  <a href="index.html">Inicio</a>
+  <a href="galeria.html">Galería</a>
+  <a href="contacto.html" class="active">Contactar</a>
+</div>
+
+<div class="page-hero">
+  <p class="s-eyebrow reveal">Contacto</p>
+  <h1 class="s-title reveal">Trabajemos<br/>juntos</h1>
+</div>
+
+<section class="contact-section">
+  <div class="inner">
+    <div class="contact-grid">
+
+      <!-- COLUMNA IZQUIERDA -->
+      <div>
+        <div class="avail-pill reveal" id="availPill">Disponible ahora</div>
+        <p class="reveal" id="contactIntro" style="font-size:.95rem;color:var(--muted);line-height:1.8;margin-bottom:2rem;">
+          Si buscas un perfil creativo, técnico y con muchas ganas de aprender, no dudes en escribirme.
+          Estoy disponible para <strong style="color:var(--text);">prácticas y oportunidades laborales</strong>
+          en la industria del videojuego y la animación.
+        </p>
+
+        <a id="contactEmail" href="mailto:enrique@email.com" class="contact-item reveal">
+          <div class="contact-item-icon">✉️</div>
+          <div>
+            <div class="contact-item-label">Email</div>
+            <div class="contact-item-text" id="emailText">enrique@email.com</div>
+          </div>
+        </a>
+
+        <a id="contactLinkedin" href="https://linkedin.com/in/enriqueperrin" target="_blank" class="contact-item reveal">
+          <div class="contact-item-icon">💼</div>
+          <div>
+            <div class="contact-item-label">LinkedIn</div>
+            <div class="contact-item-text" id="linkedinText">linkedin.com/in/enriqueperrin</div>
+          </div>
+        </a>
+
+        <a id="contactArtstation" href="https://artstation.com/enriqueperrin" target="_blank" class="contact-item reveal">
+          <div class="contact-item-icon">🎨</div>
+          <div>
+            <div class="contact-item-label">ArtStation</div>
+            <div class="contact-item-text" id="artstationText">artstation.com/enriqueperrin</div>
+          </div>
+        </a>
+
+        <a id="cvDownload" href="#" class="cv-download reveal">
+          <div class="cv-icon">📄</div>
+          <div>
+            <div>Descargar CV</div>
+            <div class="cv-text-small">PDF · Actualizado 2025</div>
+          </div>
+          <span style="margin-left:auto;">↓</span>
+        </a>
+      </div>
+
+      <!-- FORMULARIO (diseño original) -->
+      <form class="contact-form reveal" onsubmit="handleForm(event)">
+        <div class="form-row">
+          <div class="f-group">
+            <label class="f-label">Nombre</label>
+            <input type="text" placeholder="Tu nombre" required autocomplete="name" />
+          </div>
+          <div class="f-group">
+            <label class="f-label">Empresa / Estudio</label>
+            <input type="text" placeholder="Nombre de la empresa" autocomplete="organization" />
+          </div>
+        </div>
+        <div class="f-group">
+          <label class="f-label">Email</label>
+          <input type="email" placeholder="correo@empresa.com" required autocomplete="email" />
+        </div>
+        <div class="f-group">
+          <label class="f-label">Tipo de oportunidad</label>
+          <select>
+            <option value="">Selecciona una opción</option>
+            <option>Prácticas</option>
+            <option>Trabajo a tiempo completo</option>
+            <option>Proyecto freelance</option>
+            <option>Colaboración</option>
+            <option>Otro</option>
+          </select>
+        </div>
+        <div class="f-group">
+          <label class="f-label">Mensaje</label>
+          <textarea placeholder="Cuéntame sobre la oportunidad, el equipo o el proyecto..."></textarea>
+        </div>
+        <button type="submit" class="btn-submit">
+          <span id="submitTxt">Enviar mensaje</span> →
+        </button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">Enrique Perrin<span>.</span></div>
+  <div>© 2025 Enrique Perrin García · Todos los derechos reservados</div>
+  <div class="footer-links" style="display:flex;gap:1.5rem;flex-wrap:wrap;justify-content:center;"></div>
+</footer>
+
+<script src="js/data.js"></script>
+<script src="js/shared.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const db = getDB();
+  const c  = db.contact || {};
+  const cfg = db.config || {};
+
+  if (c.intro) document.getElementById('contactIntro').innerHTML = c.intro;
+
+  const email = c.email || cfg.email || '';
+  if (email) {
+    document.getElementById('emailText').textContent = email;
+    document.getElementById('contactEmail').href = 'mailto:' + email;
+  }
+
+  const li = c.linkedin || cfg.linkedin || '';
+  if (li) {
+    document.getElementById('linkedinText').textContent = li;
+    document.getElementById('contactLinkedin').href = li.startsWith('http') ? li : 'https://' + li;
+  }
+
+  const as = c.artstation || cfg.artstation || '';
+  if (as) {
+    document.getElementById('artstationText').textContent = as;
+    document.getElementById('contactArtstation').href = as.startsWith('http') ? as : 'https://' + as;
+  }
+
+  const cv = c.cvUrl || cfg.cvUrl || '#';
+  document.getElementById('cvDownload').href = cv;
+
+  if (cfg.availableForWork === false) {
+    const pill = document.getElementById('availPill');
+    pill.style.background = 'var(--bg3)';
+    pill.style.borderColor = 'var(--line)';
+    pill.style.color = 'var(--muted)';
+    pill.textContent = 'No disponible actualmente';
+  }
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,179 @@
+/* =====================================================
+   MAIN.CSS — Estilos compartidos — Versión fusión
+   ===================================================== */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:      #0e0f11;
+  --bg2:     #141518;
+  --bg3:     #1a1b1f;
+  --line:    #2a2b30;
+  --text:    #e8e9ec;
+  --muted:   #6b6e7a;
+  --accent:  #c8f060;
+  --accent2: #4af0c4;
+  --white:   #ffffff;
+  --radius:  6px;
+  --font-h:  'Syne', sans-serif;
+  --font-b:  'DM Sans', sans-serif;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-b);
+  background: var(--bg);
+  color: var(--text);
+  overflow-x: hidden;
+}
+
+/* ─── CURSOR PERSONALIZADO ─── */
+/* Oculto por defecto; JS lo muestra solo si hay ratón */
+#cur, #cur-r {
+  position: fixed; border-radius: 50%;
+  pointer-events: none; z-index: 9999;
+  transform: translate(-50%,-50%);
+  display: none;
+  will-change: left, top;
+}
+#cur   { width: 8px; height: 8px; background: var(--accent); transition: width .15s, height .15s, background .2s; }
+#cur-r { width: 32px; height: 32px; border: 1.5px solid var(--accent); opacity: .4; transition: width .2s, height .2s, opacity .2s; }
+body.hovering #cur   { width: 16px; height: 16px; background: var(--accent2); }
+body.hovering #cur-r { width: 48px; height: 48px; opacity: .2; }
+
+/* ─── NAV ─── */
+nav {
+  position: fixed; top: 0; width: 100%; z-index: 200;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1.4rem 4rem;
+  border-bottom: 1px solid transparent;
+  transition: background .4s, border-color .4s, padding .3s;
+}
+nav.scrolled {
+  background: rgba(14,15,17,.95);
+  border-color: var(--line);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  padding: 1rem 4rem;
+}
+.nav-logo {
+  font-family: var(--font-h); font-size: .95rem; font-weight: 800;
+  letter-spacing: .04em; color: var(--white); text-decoration: none;
+  flex-shrink: 0;
+}
+.nav-logo .dot { color: var(--accent); }
+.nav-links { display: flex; gap: 2.2rem; list-style: none; align-items: center; }
+.nav-links a {
+  font-size: .82rem; letter-spacing: .06em; text-transform: uppercase;
+  color: var(--muted); text-decoration: none; font-weight: 500; transition: color .2s;
+  white-space: nowrap;
+}
+.nav-links a:hover, .nav-links a.active { color: var(--white); }
+.nav-links .nav-cta {
+  background: var(--accent); color: var(--bg) !important;
+  padding: .5rem 1.3rem; border-radius: var(--radius); font-weight: 700;
+}
+.nav-links .nav-cta:hover { opacity: .85; }
+
+/* Hamburguesa */
+.nav-hamburger {
+  display: none; flex-direction: column; gap: 5px;
+  background: none; border: none; cursor: pointer; padding: .5rem; z-index: 300;
+}
+.nav-hamburger span {
+  display: block; width: 24px; height: 2px;
+  background: var(--text); border-radius: 2px;
+  transition: transform .3s, opacity .3s;
+}
+.nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.nav-hamburger.open span:nth-child(2) { opacity: 0; }
+.nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* Menú móvil */
+.nav-mobile-menu {
+  display: none;
+  position: fixed; inset: 0; z-index: 199;
+  background: var(--bg);
+  flex-direction: column;
+  align-items: center; justify-content: center; gap: 2.5rem;
+}
+.nav-mobile-menu.open { display: flex; }
+.nav-mobile-menu a {
+  font-family: var(--font-h); font-size: 2rem; font-weight: 800;
+  color: var(--muted); text-decoration: none; letter-spacing: .04em;
+  transition: color .2s;
+}
+.nav-mobile-menu a:hover, .nav-mobile-menu a.active { color: var(--accent); }
+.nav-mobile-menu .nav-cta-mobile {
+  background: var(--accent); color: var(--bg) !important;
+  padding: .9rem 2.5rem; border-radius: var(--radius); font-size: 1.2rem !important;
+}
+
+/* ─── SECCIONES COMPARTIDAS ─── */
+section { position: relative; z-index: 1; }
+.inner { max-width: 1100px; margin: 0 auto; padding: 7rem 2rem; }
+
+.s-eyebrow {
+  font-size: .7rem; letter-spacing: .2em; text-transform: uppercase;
+  color: var(--accent); margin-bottom: .8rem; font-weight: 600;
+  display: flex; align-items: center; gap: .7rem;
+}
+.s-eyebrow::before { content:''; width: 20px; height: 1px; background: var(--accent); }
+.s-title {
+  font-family: var(--font-h); font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 800; color: var(--white); line-height: 1.1;
+}
+
+/* ─── BOTONES ─── */
+.btn {
+  display: inline-flex; align-items: center; gap: .5rem;
+  text-decoration: none; font-family: var(--font-b);
+  font-size: .85rem; font-weight: 600; letter-spacing: .03em;
+  padding: .85rem 2rem; border-radius: var(--radius);
+  transition: all .22s; cursor: pointer; border: none;
+}
+.btn-lime { background: var(--accent); color: var(--bg); }
+.btn-lime:hover { opacity: .88; transform: translateY(-2px); box-shadow: 0 8px 30px #c8f06030; }
+.btn-ghost { border: 1px solid var(--line); color: var(--text); background: transparent; }
+.btn-ghost:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
+
+/* ─── REVEAL ─── */
+.reveal { opacity: 0; transform: translateY(22px); transition: opacity .7s ease, transform .7s ease; }
+.reveal.in  { opacity: 1; transform: translateY(0); }
+
+/* ─── PAGE HERO (galería, contacto) ─── */
+.page-hero {
+  padding: 10rem 4rem 5rem;
+  max-width: 1100px; margin: 0 auto;
+}
+
+/* ─── FOOTER ─── */
+footer {
+  background: var(--bg); border-top: 1px solid var(--line);
+  padding: 2.5rem 4rem;
+  display: flex; align-items: center; justify-content: space-between;
+  font-size: .8rem; color: var(--muted);
+  flex-wrap: wrap; gap: 1rem;
+}
+footer a { color: var(--muted); text-decoration: none; transition: color .2s; }
+footer a:hover { color: var(--accent); }
+.footer-logo { font-family: var(--font-h); font-weight: 800; color: var(--white); font-size: .9rem; }
+.footer-logo span { color: var(--accent); }
+
+/* ─── RESPONSIVE GLOBAL ─── */
+@media (max-width: 900px) {
+  nav { padding: 1rem 1.5rem; }
+  nav.scrolled { padding: .8rem 1.5rem; }
+  .nav-links { display: none !important; }
+  .nav-hamburger { display: flex; }
+  .inner { padding: 4rem 1.5rem; }
+  .page-hero { padding: 7rem 1.5rem 3rem; }
+  footer { padding: 2rem 1.5rem; flex-direction: column; text-align: center; }
+  footer > div:last-child { justify-content: center; display: flex; gap: 1.5rem; }
+}
+
+@media (max-width: 600px) {
+  .inner { padding: 3.5rem 1.2rem; }
+  .page-hero { padding: 6rem 1.2rem 2.5rem; }
+}

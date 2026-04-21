@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Galería — Enrique Perrin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/main.css" />
+  <style>
+    /* ── FILTROS ─────────────────────────────────── */
+    .gallery-filters {
+      display: flex; gap: .5rem; flex-wrap: wrap; margin: 2.5rem 0 2rem;
+    }
+    .gal-filter-btn {
+      font-size: .75rem; letter-spacing: .06em; text-transform: uppercase;
+      padding: .45rem 1.1rem; border-radius: 99px; border: 1px solid var(--line);
+      background: transparent; color: var(--muted); cursor: pointer;
+      transition: all .2s; font-family: var(--font-b);
+    }
+    .gal-filter-btn.active, .gal-filter-btn:hover {
+      border-color: var(--accent); color: var(--accent); background: #c8f06010;
+    }
+
+    /* ── GRID — re-renderiza al filtrar, sin huecos ─ */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+    }
+    .gal-item {
+      overflow: hidden; border-radius: 8px;
+      border: 1px solid var(--line); position: relative;
+      cursor: pointer; background: var(--bg2);
+      transition: border-color .3s, transform .3s;
+    }
+    .gal-item:hover { border-color: #c8f06050; transform: translateY(-3px); }
+    .gal-item img {
+      width: 100%; height: 240px; object-fit: cover; display: block;
+      transition: transform .5s, filter .4s; filter: saturate(.7);
+    }
+    .gal-item:hover img { transform: scale(1.06); filter: saturate(1.2); }
+    .gal-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, #0e0f11cc 0%, transparent 60%);
+      opacity: 0; transition: opacity .3s;
+      display: flex; align-items: flex-end; justify-content: space-between;
+      padding: 1.2rem;
+    }
+    .gal-item:hover .gal-overlay { opacity: 1; }
+    .gal-label {
+      font-size: .78rem; letter-spacing: .1em; text-transform: uppercase;
+      color: var(--accent); font-weight: 600;
+    }
+    .gal-cat-badge {
+      position: absolute; top: .8rem; right: .8rem;
+      background: rgba(14,15,17,.8); border: 1px solid var(--line);
+      border-radius: 99px; padding: .2rem .7rem;
+      font-size: .65rem; color: var(--muted); letter-spacing: .08em;
+      backdrop-filter: blur(4px);
+    }
+    .gal-expand {
+      background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.2);
+      border-radius: 50%; width: 28px; height: 28px;
+      display: flex; align-items: center; justify-content: center;
+      color: white; font-size: .75rem; flex-shrink: 0;
+    }
+
+    /* ── EMPTY STATE ──────────────────────────────── */
+    .gallery-empty {
+      grid-column: 1/-1; text-align: center;
+      padding: 5rem 2rem; color: var(--muted); font-size: .95rem;
+    }
+    .gallery-empty span { display: block; font-size: 3rem; margin-bottom: 1rem; }
+
+    /* ── LIGHTBOX ─────────────────────────────────── */
+    .lightbox {
+      display: none; position: fixed; inset: 0; z-index: 1000;
+      background: rgba(0,0,0,.92);
+      align-items: center; justify-content: center; padding: 2rem;
+    }
+    .lightbox.open { display: flex; }
+    .lightbox-inner { position: relative; max-width: 960px; width: 100%; }
+    .lightbox-img   { width: 100%; border-radius: 10px; display: block; max-height: 80vh; object-fit: contain; }
+    .lightbox-close {
+      position: absolute; top: -2.5rem; right: 0;
+      background: none; border: none; color: var(--muted);
+      font-size: 1.6rem; cursor: pointer; padding: .5rem;
+      transition: color .2s; line-height: 1;
+    }
+    .lightbox-close:hover { color: var(--accent); }
+    .lightbox-footer {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-top: .8rem;
+    }
+    .lightbox-label {
+      color: var(--muted); font-size: .8rem;
+      letter-spacing: .1em; text-transform: uppercase;
+    }
+    .lightbox-nav { display: flex; gap: .5rem; }
+    .lightbox-nav button {
+      background: var(--bg3); border: 1px solid var(--line); border-radius: 6px;
+      color: var(--text); padding: .4rem .8rem; cursor: pointer;
+      font-size: .85rem; transition: border-color .2s, color .2s;
+    }
+    .lightbox-nav button:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* ── RESPONSIVE ────────────────────────────────── */
+    @media (max-width: 900px) {
+      .gallery-grid { grid-template-columns: 1fr 1fr; }
+      .gal-item img { height: 200px; }
+    }
+    @media (max-width: 520px) {
+      .gallery-grid { grid-template-columns: 1fr; }
+      .gal-item img { height: 220px; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="cur"></div>
+<div id="cur-r"></div>
+
+<nav id="nav">
+  <a href="index.html" class="nav-logo">Enrique Perrin<span class="dot">.</span></a>
+  <ul class="nav-links">
+    <li><a href="index.html">Inicio</a></li>
+    <li><a href="galeria.html" class="active">Galería</a></li>
+    <li><a href="contacto.html" class="nav-cta">Contactar</a></li>
+  </ul>
+  <button class="nav-hamburger" id="navHamburger" aria-label="Menú">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+<div class="nav-mobile-menu" id="navMobile">
+  <a href="index.html">Inicio</a>
+  <a href="galeria.html" class="active">Galería</a>
+  <a href="contacto.html" class="nav-cta-mobile">Contactar</a>
+</div>
+
+<div class="page-hero">
+  <p class="s-eyebrow reveal">Galería</p>
+  <h1 class="s-title reveal">Muestra de<br/>trabajos</h1>
+  <p class="reveal" style="color:var(--muted);margin-top:.8rem;font-size:.9rem;">
+    Haz clic en cualquier imagen para ampliarla.
+  </p>
+</div>
+
+<div style="max-width:1100px;margin:0 auto;padding:0 2rem 7rem;">
+  <div class="gallery-filters reveal" id="galleryFilters"></div>
+  <div class="gallery-grid" id="galleryGrid"></div>
+</div>
+
+<footer>
+  <div class="footer-logo">Enrique Perrin<span>.</span></div>
+  <div>© 2025 Enrique Perrin García · Todos los derechos reservados</div>
+  <div class="footer-links" style="display:flex;gap:1.5rem;flex-wrap:wrap;justify-content:center;"></div>
+</footer>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox">
+  <div class="lightbox-inner">
+    <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+    <img class="lightbox-img" id="lightboxImg" src="" alt="" />
+    <div class="lightbox-footer">
+      <div class="lightbox-label" id="lightboxLabel"></div>
+      <div class="lightbox-nav">
+        <button onclick="lightboxNav(-1)">← Anterior</button>
+        <button onclick="lightboxNav(1)">Siguiente →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="js/data.js"></script>
+<script src="js/shared.js"></script>
+<script>
+let currentFilter = 'all';
+let filteredItems  = [];
+let lightboxIndex  = 0;
+
+function renderGallery() {
+  const db = getDB();
+  const { categories, images } = db.gallery;
+
+  /* Filtros */
+  const filtersEl = document.getElementById('galleryFilters');
+  filtersEl.innerHTML =
+    `<button class="gal-filter-btn active" onclick="filterGallery(event,'all')">Todos (${images.length})</button>` +
+    categories.map(cat => {
+      const count = images.filter(i => i.cat === cat.id).length;
+      return count > 0
+        ? `<button class="gal-filter-btn" onclick="filterGallery(event,'${cat.id}')">${cat.name} (${count})</button>`
+        : '';
+    }).join('');
+
+  renderGrid('all', images, categories);
+}
+
+function renderGrid(catId, images, categories) {
+  currentFilter = catId;
+  filteredItems = catId === 'all' ? images : images.filter(i => i.cat === catId);
+
+  const grid = document.getElementById('galleryGrid');
+  if (!filteredItems.length) {
+    grid.innerHTML = `<div class="gallery-empty"><span>🖼️</span>No hay imágenes en esta categoría.</div>`;
+    return;
+  }
+
+  // Re-renderizar solo las visibles → sin huecos
+  grid.innerHTML = filteredItems.map((img, idx) => {
+    const cat = categories.find(c => c.id === img.cat);
+    return `
+    <div class="gal-item reveal" onclick="openLightbox(${idx})">
+      <img src="${img.src}" alt="${img.alt}" loading="lazy" />
+      ${cat ? `<div class="gal-cat-badge">${cat.name}</div>` : ''}
+      <div class="gal-overlay">
+        <span class="gal-label">${img.alt}</span>
+        <span class="gal-expand">⤢</span>
+      </div>
+    </div>`;
+  }).join('');
+
+  setTimeout(initReveal, 40);
+}
+
+function filterGallery(e, catId) {
+  document.querySelectorAll('.gal-filter-btn').forEach(b => b.classList.remove('active'));
+  e.target.classList.add('active');
+  const db = getDB();
+  renderGrid(catId, db.gallery.images, db.gallery.categories);
+}
+
+/* Lightbox */
+function openLightbox(idx) {
+  lightboxIndex = idx;
+  updateLightbox();
+  document.getElementById('lightbox').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function updateLightbox() {
+  const item = filteredItems[lightboxIndex];
+  if (!item) return;
+  document.getElementById('lightboxImg').src = item.src;
+  document.getElementById('lightboxImg').alt = item.alt;
+  document.getElementById('lightboxLabel').textContent =
+    item.alt + ' — ' + (lightboxIndex + 1) + ' / ' + filteredItems.length;
+}
+
+function lightboxNav(dir) {
+  lightboxIndex = (lightboxIndex + dir + filteredItems.length) % filteredItems.length;
+  updateLightbox();
+}
+
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+document.getElementById('lightbox').addEventListener('click', e => {
+  if (e.target === document.getElementById('lightbox')) closeLightbox();
+});
+
+document.addEventListener('keydown', e => {
+  if (!document.getElementById('lightbox').classList.contains('open')) return;
+  if (e.key === 'Escape')      closeLightbox();
+  if (e.key === 'ArrowLeft')   lightboxNav(-1);
+  if (e.key === 'ArrowRight')  lightboxNav(1);
+});
+
+renderGallery();
+</script>
+</body>
+</html>
